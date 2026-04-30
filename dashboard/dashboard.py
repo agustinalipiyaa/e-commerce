@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
 
 st.set_page_config(page_title="E-Commerce Dashboard", layout="wide")
 
@@ -12,11 +13,13 @@ st.title("📊 E-Commerce Data Analysis Dashboard")
 # ===============================
 @st.cache_data
 def load_data():
-    # load dataset asli
-    orders = pd.read_csv("orders_dataset.csv")
-    order_items = pd.read_csv("order_items_dataset.csv")
-    products = pd.read_csv("products_dataset.csv")
-    category = pd.read_csv("product_category_name_translation.csv")
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+    # load file sesuai nama kamu
+    orders = pd.read_csv(os.path.join(BASE_DIR, "..", "data 1.csv"))
+    order_items = pd.read_csv(os.path.join(BASE_DIR, "..", "data 2.csv"))
+    products = pd.read_csv(os.path.join(BASE_DIR, "..", "data 3.csv"))
+    category = pd.read_csv(os.path.join(BASE_DIR, "..", "data 4.csv"))
 
     # merge dataset
     df = orders.merge(order_items, on="order_id")
@@ -98,9 +101,9 @@ st.pyplot(fig2)
 st.subheader("💡 Insight")
 
 st.write("""
-- Penjualan didominasi oleh beberapa kategori utama
-- Terjadi peningkatan order pada akhir tahun
-- Terdapat fluktuasi order bulanan
+- Penjualan didominasi oleh beberapa kategori utama  
+- Terjadi peningkatan order pada akhir tahun  
+- Terdapat fluktuasi order bulanan  
 """)
 
 # ===============================
