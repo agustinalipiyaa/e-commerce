@@ -7,12 +7,31 @@ st.set_page_config(page_title="E-Commerce Dashboard", layout="wide")
 
 st.title("📊 E-Commerce Data Analysis Dashboard")
 
-# Load Data
+# ===============================
+# LOAD DATA
+# ===============================
 @st.cache_data
 def load_data():
-    df = pd.read_csv("cleaned_data.csv")
+    # load dataset asli
+    orders = pd.read_csv("orders_dataset.csv")
+    order_items = pd.read_csv("order_items_dataset.csv")
+    products = pd.read_csv("products_dataset.csv")
+    category = pd.read_csv("product_category_name_translation.csv")
+
+    # merge dataset
+    df = orders.merge(order_items, on="order_id")
+    df = df.merge(products, on="product_id")
+    df = df.merge(category, on="product_category_name")
+
+    # cleaning
+    df.dropna(inplace=True)
+
+    # convert datetime
     df['order_purchase_timestamp'] = pd.to_datetime(df['order_purchase_timestamp'])
+
+    # feature engineering
     df['month'] = df['order_purchase_timestamp'].dt.to_period('M').astype(str)
+
     return df
 
 df = load_data()
@@ -90,8 +109,8 @@ st.write("""
 st.subheader("🚀 Recommendations")
 
 st.write("""
-1. Fokus pada kategori dengan penjualan tinggi
-2. Optimalkan kategori dengan performa rendah
-3. Maksimalkan campaign pada akhir tahun
-4. Buat strategi promo di bulan sepi
+1. Fokus pada kategori dengan penjualan tinggi  
+2. Optimalkan kategori dengan performa rendah  
+3. Maksimalkan campaign pada akhir tahun  
+4. Buat strategi promo di bulan sepi  
 """)
